@@ -24,6 +24,7 @@ Declare a new bean in your Spring configuration :
 ```
 <bean id="cronitorClient" class="io.cronitor.client.CronitorClient">
      <constructor-arg index="0" value="apiKey"/>
+     <constructor-arg index="1" value="myEnv"/>
 </bean>
 ```
 
@@ -36,7 +37,7 @@ private CronitorClient cronitorClient;
 ### Usage without Spring
 Simply declare a new CronitorClient instance in the class containing the routine to monitor:
 ```
-CronitorClient cronitorClient = new CronitorClient('yourApiKey');
+CronitorClient cronitorClient = new CronitorClient('yourApiKey','myEnv');
 ```
 
 ### Examples
@@ -54,6 +55,17 @@ CronitorClient cronitorClient = new CronitorClient('yourApiKey');
 ### send a failure event (a job/process crashed)
 ```java
     cronitorClient.complete("nightlyDataExport");
+```
+
+### send a metrics event
+```java
+    Map<String, Integer> metrics = new HashMap<String, Integer>() {
+            {
+                put("count", 100);
+                put("error_count", 5);
+            }
+        };
+    cronitorClient.metrics("nightlyDataExport", metrics);
 ```
 
 ### pause a monitor
@@ -86,3 +98,5 @@ If you want to share an idea, report an issue, or just say hello you can open an
 - [@nnerny](https://github.com/nnerny)
 - [@firone](https://github.com/firone)
 - [@aflanagan](https://github.com/aflanagan)
+- [@vcanuel](https://github.com/vcanuel)
+
