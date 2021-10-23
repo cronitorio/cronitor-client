@@ -5,6 +5,7 @@ import org.apache.http.client.utils.URIBuilder;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Map;
 import java.util.logging.Logger;
 
 public class CommandUrlGenerator {
@@ -33,9 +34,8 @@ public class CommandUrlGenerator {
         this.useHttps = useHttps;
     }
 
-
-    public URL buildURL(String command, String monitorKey, String apiKey, String message) throws MalformedURLException {
-        String baseURL;
+    public URL buildURL(String command, String monitorKey, String apiKey, String message, String env)
+            throws MalformedURLException {
         String url;
 
         if (usePrimaryPingDomain) {
@@ -54,12 +54,17 @@ public class CommandUrlGenerator {
             uriBuilder.addParameter("state", command);
 
             if (message != null) {
-                uriBuilder.addParameter("msg", message);
+                uriBuilder.addParameter("message", message);
+            }
+
+            if (env != null) {
+                uriBuilder.addParameter("env", env);
             }
 
             return uriBuilder.build().toURL();
         } catch (URISyntaxException e) {
-            logger.warning(String.format("Failed to construct url for [%s, %s, %s, %s]", command, monitorKey, apiKey, message));
+            logger.warning(String.format("Failed to construct url for [%s, %s, %s, %s]", command, monitorKey, apiKey,
+                    message));
             return new URL(CommandUrlGenerator.BASE_URL);
         }
 
@@ -78,8 +83,41 @@ public class CommandUrlGenerator {
 
             return uriBuilder.build().toURL();
         } catch (URISyntaxException e) {
-            logger.warning(String.format("Failed to construct url for [%s, %d, %s, %s]", monitorKey, pauseHours, apiKey));
+            logger.warning(String.format("Failed to construct url for [%s, %d, %s]", monitorKey, pauseHours, apiKey));
             return new URL(CommandUrlGenerator.PAUSE_BASE_URL);
+        }
+    }
+
+    public URL buildMetricsURI(String monitorKey, String apiKey, String env, Map<String, Integer> metrics)
+            throws MalformedURLException {
+        String url;
+
+        if (usePrimaryPingDomain) {
+            if (useHttps) {
+                url = String.format(CommandUrlGenerator.BASE_URL, apiKey, monitorKey);
+            } else {
+                url = String.format(CommandUrlGenerator.BASE_URL_HTTP, monitorKey);
+            }
+        } else {
+            url = String.format(CommandUrlGenerator.FALLBACK_BASE_URL, apiKey, monitorKey);
+        }
+
+        try {
+            URIBuilder uriBuilder = new URIBuilder(url);
+
+            if (metrics != null) {
+                metrics.forEach((key, value) -> uriBuilder.addParameter("metric", key + ":" + value));
+            }
+
+            if (env != null) {
+                uriBuilder.addParameter("env", env);
+            }
+
+            return uriBuilder.build().toURL();
+        } catch (URISyntaxException e) {
+            logger.warning(
+                    String.format("Failed to construct metric url for [%s, %s, %s]", monitorKey, apiKey, metrics));
+            return new URL(CommandUrlGenerator.BASE_URL);
         }
     }
 }
