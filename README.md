@@ -55,18 +55,7 @@ CronitorClient cronitorClient = new CronitorClient('yourApiKey','myEnv');
 ### send a failure event (a job/process crashed)
 ```java
     cronitorClient.complete("nightlyDataExport");
-```
-
-### send a metrics event
-```java
-    Map<String, Integer> metrics = new HashMap<String, Integer>() {
-            {
-                put("count", 100);
-                put("error_count", 5);
-            }
-        };
-    cronitorClient.metrics("nightlyDataExport", metrics);
-```
+``
 
 ### pause a monitor
 ```java
@@ -86,6 +75,19 @@ CronitorClient cronitorClient = new CronitorClient('yourApiKey','myEnv');
     cronitorClient.fail("nightlyDataExport", e.printStackTrace());
 ```
 
+### including metrics
+```java
+    Map<String, Integer> metrics = new HashMap<String, Integer>() {
+            {
+                put("count", 100);
+                put("error_count", 5);
+            }
+        };
+    // each event method supports an optional message param
+    cronitorClient.complete("nightlyDataExport", "ok", metrics);
+
+    cronitorClient.fail("nightlyDataExport", e.printStackTrace(), metrics);
+```
 
 ## Development
 

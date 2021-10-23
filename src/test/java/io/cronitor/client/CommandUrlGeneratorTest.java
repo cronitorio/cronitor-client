@@ -38,6 +38,14 @@ public class CommandUrlGeneratorTest {
     }
 
     @Test
+    public void can_build_ok_url() throws Exception {
+        URL completeUrl = urlGenerator.buildURL(Command.OK.getValue(), monitorKey, apiKey, null, null, null);
+
+        Assert.assertEquals(new URL(String.format("https://cronitor.link/p/%s/%s?state=ok", apiKey, monitorKey)),
+                completeUrl);
+    }
+
+    @Test
     public void can_build_fail_url() throws Exception {
         URL fail = urlGenerator.buildURL(Command.FAIL.getValue(), monitorKey, apiKey, null, null, null);
 
@@ -90,8 +98,7 @@ public class CommandUrlGeneratorTest {
                 put("error_count", 5);
             }
         };
-        URL runURL = fallbackUrlGenerator.buildURL(Command.COMPLETE.getValue(), monitorKey, apiKey, null, null,
-                metrics);
+        URL runURL = urlGenerator.buildURL(Command.COMPLETE.getValue(), monitorKey, apiKey, null, null, metrics);
 
         Assert.assertEquals(new URL(String.format(
                 "https://cronitor.link/p/%s/%s?state=complete&metric=count%%3A100&metric=error_count%%3A5", apiKey,

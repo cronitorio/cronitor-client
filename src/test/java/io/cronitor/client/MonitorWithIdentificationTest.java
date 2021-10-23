@@ -44,6 +44,21 @@ public class MonitorWithIdentificationTest {
     }
 
     @Test
+    public void can_reset_monitor_with_minimal_requirements() throws Exception {
+
+        client.reset(monitorKey);
+        verify(cronitorPinger).ping(Command.OK.getValue(), "d3x0c1", "anApiKey", "anEnv", null, null, true);
+    }
+
+    @Test
+    public void can_reset_monitor_with_message() throws Exception {
+
+        client.reset(monitorKey, "customCompleteMessage");
+        verify(cronitorPinger).ping(Command.OK.getValue(), "d3x0c1", "anApiKey", "anEnv", "customCompleteMessage", null,
+                true);
+    }
+
+    @Test
     public void can_complete_monitor_with_message() throws Exception {
 
         client.complete(monitorKey, "customCompleteMessage");

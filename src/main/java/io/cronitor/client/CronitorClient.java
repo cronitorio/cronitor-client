@@ -98,6 +98,24 @@ public class CronitorClient {
         }
     }
 
+    public void reset(String monitorKey) throws IOException {
+
+        if (StringUtils.isNotBlank(monitorKey)) {
+            cronitorPinger.ping(Command.OK.getValue(), monitorKey, apiKey, env, null, null, useHttps);
+        } else {
+            logger.warning("We can't ping /run on cronitor because the monitor code is null or empty");
+        }
+    }
+
+    public void reset(String monitorKey, String message) throws IOException {
+
+        if (StringUtils.isNotBlank(monitorKey)) {
+            cronitorPinger.ping(Command.OK.getValue(), monitorKey, apiKey, env, message, null, useHttps);
+        } else {
+            logger.warning("We can't ping /run on cronitor because the monitor code is null or empty");
+        }
+    }
+
     public void fail(String monitorKey) throws IOException {
 
         if (StringUtils.isNotBlank(monitorKey)) {

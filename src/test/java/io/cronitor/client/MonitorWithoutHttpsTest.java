@@ -7,6 +7,8 @@ import org.mockito.Mock;
 import org.powermock.modules.junit4.PowerMockRunner;
 import static org.mockito.Mockito.verify;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 @RunWith(PowerMockRunner.class)
@@ -53,6 +55,20 @@ public class MonitorWithoutHttpsTest {
     }
 
     @Test
+    public void can_reset_monitor_with_minimal_requirements() throws Exception {
+
+        client.reset(monitorKey);
+        verify(cronitorPinger).ping(Command.OK.getValue(), "d3x0c1", null, null, null, null, false);
+    }
+
+    @Test
+    public void can_reset_monitor_with_message() throws Exception {
+
+        client.reset(monitorKey, "customCompleteMessage");
+        verify(cronitorPinger).ping(Command.OK.getValue(), "d3x0c1", null, null, "customCompleteMessage", null, false);
+    }
+
+    @Test
     public void can_fail_monitor_with_minimal_requirements() throws Exception {
 
         client.fail(monitorKey);
@@ -63,6 +79,18 @@ public class MonitorWithoutHttpsTest {
     public void can_fail_monitor_with_message() throws Exception {
         client.fail(monitorKey, "customFailMessage");
         verify(cronitorPinger).ping(Command.FAIL.getValue(), "d3x0c1", null, null, "customFailMessage", null, false);
+    }
+
+    @Test
+    public void can_fail_monitor_with_metrics() throws Exception {
+        Map<String, Integer> metrics = new HashMap<String, Integer>() {
+            {
+                put("count", 100);
+                put("error_count", 5);
+            }
+        };
+        client.fail(monitorKey, null, metrics);
+        verify(cronitorPinger).ping(Command.FAIL.getValue(), "d3x0c1", null, null, null, metrics, false);
     }
 
     @Test
