@@ -27,41 +27,42 @@ public class MonitorWithoutHttpsTest {
     public void can_start_monitor_with_minimal_requirements() throws Exception {
 
         client.run(monitorKey);
-        verify(cronitorPinger).ping(Command.RUN.getValue(), "d3x0c1", null, null, null, false);
+        verify(cronitorPinger).ping(Command.RUN.getValue(), "d3x0c1", null, null, null, null, false);
     }
 
     @Test
     public void can_start_monitor_with_message() throws Exception {
 
         client.run(monitorKey, "customRunMessage");
-        verify(cronitorPinger).ping(Command.RUN.getValue(), "d3x0c1", null, "customRunMessage", null, false);
+        verify(cronitorPinger).ping(Command.RUN.getValue(), "d3x0c1", null, null, "customRunMessage", null, false);
     }
 
     @Test
     public void can_complete_monitor_with_minimal_requirements() throws Exception {
 
         client.complete(monitorKey);
-        verify(cronitorPinger).ping(Command.COMPLETE.getValue(), "d3x0c1", null, null, null, false);
+        verify(cronitorPinger).ping(Command.COMPLETE.getValue(), "d3x0c1", null, null, null, null, false);
     }
 
     @Test
     public void can_complete_monitor_with_message() throws Exception {
 
         client.complete(monitorKey, "customCompleteMessage");
-        verify(cronitorPinger).ping(Command.COMPLETE.getValue(), "d3x0c1", null, "customCompleteMessage", null, false);
+        verify(cronitorPinger).ping(Command.COMPLETE.getValue(), "d3x0c1", null, null, "customCompleteMessage", null,
+                false);
     }
 
     @Test
     public void can_fail_monitor_with_minimal_requirements() throws Exception {
 
         client.fail(monitorKey);
-        verify(cronitorPinger).ping(Command.FAIL.getValue(), "d3x0c1", null, null, null, false);
+        verify(cronitorPinger).ping(Command.FAIL.getValue(), "d3x0c1", null, null, null, null, false);
     }
 
     @Test
     public void can_fail_monitor_with_message() throws Exception {
         client.fail(monitorKey, "customFailMessage");
-        verify(cronitorPinger).ping(Command.FAIL.getValue(), "d3x0c1", null, "customFailMessage", null, false);
+        verify(cronitorPinger).ping(Command.FAIL.getValue(), "d3x0c1", null, null, "customFailMessage", null, false);
     }
 
     @Test

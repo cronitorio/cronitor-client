@@ -25,36 +25,37 @@ public class MonitorWithIdentificationTest {
 
         client.run(monitorKey);
 
-        verify(cronitorPinger).ping(Command.RUN.getValue(), "d3x0c1", "anApiKey", null, "anEnv", true);
+        verify(cronitorPinger).ping(Command.RUN.getValue(), "d3x0c1", "anApiKey", "anEnv", null, null, true);
     }
 
     @Test
     public void can_start_monitor_with_message() throws Exception {
 
         client.run(monitorKey, "customRunMessage");
-        verify(cronitorPinger).ping(Command.RUN.getValue(), "d3x0c1", "anApiKey", "customRunMessage", "anEnv", true);
+        verify(cronitorPinger).ping(Command.RUN.getValue(), "d3x0c1", "anApiKey", "anEnv", "customRunMessage", null,
+                true);
     }
 
     @Test
     public void can_complete_monitor_with_minimal_requirements() throws Exception {
 
         client.complete(monitorKey);
-        verify(cronitorPinger).ping(Command.COMPLETE.getValue(), "d3x0c1", "anApiKey", null, "anEnv", true);
+        verify(cronitorPinger).ping(Command.COMPLETE.getValue(), "d3x0c1", "anApiKey", "anEnv", null, null, true);
     }
 
     @Test
     public void can_complete_monitor_with_message() throws Exception {
 
         client.complete(monitorKey, "customCompleteMessage");
-        verify(cronitorPinger).ping(Command.COMPLETE.getValue(), "d3x0c1", "anApiKey", "customCompleteMessage", "anEnv",
-                true);
+        verify(cronitorPinger).ping(Command.COMPLETE.getValue(), "d3x0c1", "anApiKey", "anEnv", "customCompleteMessage",
+                null, true);
     }
 
     @Test
     public void can_fail_monitor_with_minimal_requirements() throws Exception {
 
         client.fail(monitorKey);
-        verify(cronitorPinger).ping(Command.FAIL.getValue(), "d3x0c1", "anApiKey", null, "anEnv", true);
+        verify(cronitorPinger).ping(Command.FAIL.getValue(), "d3x0c1", "anApiKey", "anEnv", null, null, true);
     }
 
     @Test
@@ -62,7 +63,8 @@ public class MonitorWithIdentificationTest {
 
         client.fail(monitorKey, "customFailMessage");
 
-        verify(cronitorPinger).ping(Command.FAIL.getValue(), "d3x0c1", "anApiKey", "customFailMessage", "anEnv", true);
+        verify(cronitorPinger).ping(Command.FAIL.getValue(), "d3x0c1", "anApiKey", "anEnv", "customFailMessage", null,
+                true);
     }
 
     @Test
@@ -80,15 +82,28 @@ public class MonitorWithIdentificationTest {
     }
 
     @Test
-    public void can_metrics_monitor() throws Exception {
+    public void can_complete_with_metrics() throws Exception {
         Map<String, Integer> metrics = new HashMap<String, Integer>() {
             {
                 put("count", 100);
                 put("error_count", 5);
             }
         };
-        client.metrics(monitorKey, metrics);
-        verify(cronitorPinger).metrics(monitorKey, "anApiKey", "anEnv", metrics, true);
+        client.complete(monitorKey, null, metrics);
+        verify(cronitorPinger).ping(Command.COMPLETE.getValue(), "d3x0c1", "anApiKey", "anEnv", null, metrics, true);
+    }
+
+    @Test
+    public void can_complete_with_message_and_metrics() throws Exception {
+        Map<String, Integer> metrics = new HashMap<String, Integer>() {
+            {
+                put("count", 100);
+                put("error_count", 5);
+            }
+        };
+        client.complete(monitorKey, "customCompleteMessage", metrics);
+        verify(cronitorPinger).ping(Command.COMPLETE.getValue(), "d3x0c1", "anApiKey", "anEnv", "customCompleteMessage",
+                metrics, true);
     }
 
 }

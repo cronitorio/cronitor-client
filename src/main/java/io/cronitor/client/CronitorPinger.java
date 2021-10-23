@@ -22,11 +22,12 @@ public class CronitorPinger {
     private final static Logger logger = Logger.getLogger(CronitorPinger.class.getName());
     private final Integer cronitorPingTimeoutInSecond = 10;
 
-    public void ping(String command, String monitorKey, String apiKey, String message, String env, Boolean useHttps)
-            throws IOException {
+    public void ping(String command, String monitorKey, String apiKey, String env, String message,
+            Map<String, Integer> metrics, Boolean useHttps) throws IOException {
         for (int i = 0; i < 8; i++) {
             Boolean usePrimaryPingDomain = i < 4;
-            setConnection(getURL(usePrimaryPingDomain, useHttps, command, monitorKey, apiKey, message, env), apiKey);
+            setConnection(getURL(usePrimaryPingDomain, useHttps, command, monitorKey, apiKey, env, message, metrics),
+                    apiKey);
             if (_ping()) {
                 return;
             }
@@ -43,33 +44,16 @@ public class CronitorPinger {
         }
     }
 
-    public void metrics(String monitorKey, String apiKey, String env, Map<String, Integer> metrics, Boolean useHttps)
-            throws IOException {
-        for (int i = 0; i < 8; i++) {
-            Boolean usePrimaryPingDomain = i < 4;
-            setConnection(getURL(usePrimaryPingDomain, useHttps, monitorKey, apiKey, env, metrics), apiKey);
-            if (_ping()) {
-                return;
-            }
-        }
-    }
-
     // methods below are left open to package for ease of testing purposes.
     URL getURL(Boolean usePrimaryPingDomain, Boolean useHttps, String command, String monitorKey, String apiKey,
-            String message, String env) throws IOException {
-        return new CommandUrlGenerator(usePrimaryPingDomain, useHttps).buildURL(command, monitorKey, apiKey, message,
-                env);
+            String env, String message, Map<String, Integer> metrics) throws IOException {
+        return new CommandUrlGenerator(usePrimaryPingDomain, useHttps).buildURL(command, monitorKey, apiKey, env,
+                message, metrics);
     }
 
     URL getURL(Boolean usePrimaryPingDomain, Boolean useHttps, String monitorKey, int timeoutHours, String apiKey)
             throws IOException {
         return new CommandUrlGenerator(usePrimaryPingDomain, useHttps).buildPauseURI(monitorKey, timeoutHours, apiKey);
-    }
-
-    URL getURL(Boolean usePrimaryPingDomain, Boolean useHttps, String monitorKey, String apiKey, String env,
-            Map<String, Integer> metrics) throws IOException {
-        return new CommandUrlGenerator(usePrimaryPingDomain, useHttps).buildMetricsURI(monitorKey, apiKey, env,
-                metrics);
     }
 
     void setConnection(URL url, String apiKey) {
