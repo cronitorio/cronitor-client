@@ -52,6 +52,11 @@ CronitorClient cronitorClient = new CronitorClient('yourApiKey','myEnv');
     cronitorClient.complete("nightlyDataExport");
 ```
 
+### send a tick event (Send heartbeat events for a job/process)
+```java
+    cronitorClient.tick("important-heartbeat-monitor");
+```
+
 ### send a failure event (a job/process crashed)
 ```java
     cronitorClient.complete("nightlyDataExport");
@@ -71,6 +76,8 @@ CronitorClient cronitorClient = new CronitorClient('yourApiKey','myEnv');
 ```java
     // each event method supports an optional message param
     cronitorClient.run("nightlyDataExport", "Started by user 123");
+
+    cronitorClient.run("important-heartbeat-monitor", "Alive!");
 
     cronitorClient.fail("nightlyDataExport", e.printStackTrace());
 ```
