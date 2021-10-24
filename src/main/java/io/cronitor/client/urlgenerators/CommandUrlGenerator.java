@@ -51,7 +51,9 @@ public class CommandUrlGenerator {
         try {
             URIBuilder uriBuilder = new URIBuilder(url);
 
-            uriBuilder.addParameter("state", command);
+            if (command != null) {
+                uriBuilder.addParameter("state", command);
+            }
 
             if (message != null) {
                 uriBuilder.addParameter("message", message);

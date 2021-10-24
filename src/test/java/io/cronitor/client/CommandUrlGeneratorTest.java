@@ -38,6 +38,22 @@ public class CommandUrlGeneratorTest {
     }
 
     @Test
+    public void can_build_tick_url() throws Exception {
+        URL completeUrl = urlGenerator.buildURL(null, monitorKey, apiKey, null, null, null);
+
+        Assert.assertEquals(new URL(String.format("https://cronitor.link/p/%s/%s", apiKey, monitorKey)), completeUrl);
+    }
+
+    @Test
+    public void can_build_tick_with_message_url() throws Exception {
+        URL completeUrl = urlGenerator.buildURL(null, monitorKey, apiKey, null, "customMessage", null);
+
+        Assert.assertEquals(
+                new URL(String.format("https://cronitor.link/p/%s/%s?message=customMessage", apiKey, monitorKey)),
+                completeUrl);
+    }
+
+    @Test
     public void can_build_ok_url() throws Exception {
         URL completeUrl = urlGenerator.buildURL(Command.OK.getValue(), monitorKey, apiKey, null, null, null);
 

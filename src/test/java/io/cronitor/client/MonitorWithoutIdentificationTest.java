@@ -68,6 +68,20 @@ public class MonitorWithoutIdentificationTest {
     }
 
     @Test
+    public void can_tick_monitor_with_minimal_requirements() throws Exception {
+
+        client.tick(monitorKey);
+        verify(cronitorPinger).ping(null, "d3x0c1", null, null, null, null, true);
+    }
+
+    @Test
+    public void can_tick_monitor_with_message() throws Exception {
+
+        client.tick(monitorKey, "customCompleteMessage");
+        verify(cronitorPinger).ping(null, "d3x0c1", null, null, "customCompleteMessage", null, true);
+    }
+
+    @Test
     public void can_reset_monitor_with_minimal_requirements() throws Exception {
 
         client.reset(monitorKey);
