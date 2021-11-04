@@ -6,7 +6,7 @@
 
     <groupId>io.cronitor</groupId>
     <artifactId>client</artifactId>
-    <version>1.4.1</version>
+    <version>1.5.0</version>
     <name>Cronitor Client</name>
     <description>cronitor-client is a simple Java library designed to help you monitoring, with www.cronitor.io, the routines of your Java projects</description>
     <url>https://github.com/cronitorio/cronitor-java</url>

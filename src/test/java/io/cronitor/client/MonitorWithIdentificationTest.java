@@ -135,4 +135,29 @@ public class MonitorWithIdentificationTest {
                 metrics, true);
     }
 
+    @Test
+    public void can_tick_with_metrics() throws Exception {
+        Map<String, Integer> metrics = new HashMap<String, Integer>() {
+            {
+                put("count", 100);
+                put("error_count", 5);
+            }
+        };
+        client.tick(monitorKey, null, metrics);
+        verify(cronitorPinger).ping(null, "d3x0c1", "anApiKey", "anEnv", null, metrics, true);
+    }
+
+    @Test
+    public void can_tick_with_message_and_metrics() throws Exception {
+        Map<String, Integer> metrics = new HashMap<String, Integer>() {
+            {
+                put("count", 100);
+                put("error_count", 5);
+            }
+        };
+        client.tick(monitorKey, "customTickMessage", metrics);
+        verify(cronitorPinger).ping(null, "d3x0c1", "anApiKey", "anEnv", "customTickMessage",
+                metrics, true);
+    }
+
 }

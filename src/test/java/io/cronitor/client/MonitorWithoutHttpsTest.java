@@ -108,6 +108,18 @@ public class MonitorWithoutHttpsTest {
     }
 
     @Test
+    public void can_tick_monitor_with_metrics() throws Exception {
+        Map<String, Integer> metrics = new HashMap<String, Integer>() {
+            {
+                put("count", 100);
+                put("error_count", 5);
+            }
+        };
+        client.tick(monitorKey, null, metrics);
+        verify(cronitorPinger).ping(null, "d3x0c1", null, null, null, metrics, false);
+    }
+
+    @Test
     public void pause_logs_an_error() throws Exception {
         client.pause(monitorKey, 5);
         verify(logger).warning("Set an API key to call pause.");
