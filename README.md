@@ -14,7 +14,7 @@ If you are using Maven, simply add this line in your pom.xml file :
 <dependency>
     <groupId>io.cronitor</groupId>
     <artifactId>client</artifactId>
-    <version>1.4.1</version>
+    <version>1.5.0</version>
 </dependency>
 ```
 
@@ -24,7 +24,7 @@ Declare a new bean in your Spring configuration :
 ```
 <bean id="cronitorClient" class="io.cronitor.client.CronitorClient">
      <constructor-arg index="0" value="apiKey"/>
-     <constructor-arg index="1" value="myEnv"/>
+     <constructor-arg index="1" value="environment"/> // optional
 </bean>
 ```
 
@@ -37,49 +37,52 @@ private CronitorClient cronitorClient;
 ### Usage without Spring
 Simply declare a new CronitorClient instance in the class containing the routine to monitor:
 ```
-CronitorClient cronitorClient = new CronitorClient('yourApiKey','myEnv');
+CronitorClient cronitorClient = new CronitorClient('yourApiKey');
+
+To send events to an environment other than the default ('production'), you can pass the environment as the second argument.
+CronitorClient cronitorClient = new CronitorClient('yourApiKey', 'production');
 ```
 
 ### Examples
 
-### send a run event (a job/process has started)
+### send a run event (a job has started)
 ```java
-    cronitorClient.run("nightlyDataExport");
+    cronitorClient.run("nightly-data-export");
 ```
 
-### send a complete event (a job/process has completed successfully)
+### send a complete event (a job has completed successfully)
 ```java
-    cronitorClient.complete("nightlyDataExport");
+    cronitorClient.complete("nightly-data-export");
 ```
 
-### send a tick event (Send heartbeat events for a job/process)
+### send a failure event (a job has failed)
 ```java
-    cronitorClient.tick("important-heartbeat-monitor");
+    cronitorClient.complete("nightly-data-export");
 ```
 
-### send a failure event (a job/process crashed)
+### send a tick event (heartbeat events)
 ```java
-    cronitorClient.complete("nightlyDataExport");
-``
+    cronitorClient.tick("heartbeat-monitor");
+```
 
 ### pause a monitor
 ```java
-    cronitorClient.pause("nightlyDataExport", numberOfHours);
+    cronitorClient.pause("nightly-data-export", numberOfHours);
 ```
 
 ### unpause a monitor
 ```java
-    cronitorClient.unpause("nightlyDataExport");
+    cronitorClient.unpause("nightly-data-export");
 ```
 
 ### including messages
 ```java
     // each event method supports an optional message param
-    cronitorClient.run("nightlyDataExport", "Started by user 123");
+    cronitorClient.run("nightly-data-export", "Started by user 123");
 
-    cronitorClient.run("important-heartbeat-monitor", "Alive!");
+    cronitorClient.complete("nightly-data-export", "Alive!");
 
-    cronitorClient.fail("nightlyDataExport", e.printStackTrace());
+    cronitorClient.fail("nightly-data-export", e.printStackTrace());
 ```
 
 ### including metrics
@@ -91,9 +94,9 @@ CronitorClient cronitorClient = new CronitorClient('yourApiKey','myEnv');
             }
         };
     // each event method supports an optional message param
-    cronitorClient.complete("nightlyDataExport", "ok", metrics);
+    cronitorClient.complete("nightly-data-export", "ok", metrics);
 
-    cronitorClient.fail("nightlyDataExport", e.printStackTrace(), metrics);
+    cronitorClient.fail("nightly-data-export", e.printStackTrace(), metrics);
 ```
 
 ## Development

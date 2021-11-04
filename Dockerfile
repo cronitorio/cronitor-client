@@ -11,7 +11,8 @@ RUN mvn -f pom.xml clean package
 
 
 # To release a new version the following commands need to be run from the container
+# (connect with docker run -it cronitor-java /bin/bash)
 # gpg --gen-key
-# gpg --keyserver khkp://eys.openpgp.org --send-keys
+# gpg --keyserver keyserver.ubuntu.com --send-keys <PUB KEY FROM PREV STEP>
 # mvn versions:set -DnewVersion=X.X.X
 # mvn clean deploy -s settings.xml -Prelease
