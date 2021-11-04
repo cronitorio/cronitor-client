@@ -2,11 +2,7 @@ package io.cronitor.client;
 
 public enum Command {
 
-    RUN("run"),
-    PAUSE("pause"),
-    COMPLETE("complete"),
-    FAIL("fail"),
-    TICK("tick");
+    RUN("run"), PAUSE("pause"), COMPLETE("complete"), FAIL("fail"), OK("ok");
 
     private String value;
 

@@ -14,7 +14,7 @@ If you are using Maven, simply add this line in your pom.xml file :
 <dependency>
     <groupId>io.cronitor</groupId>
     <artifactId>client</artifactId>
-    <version>1.4.0</version>
+    <version>1.4.1</version>
 </dependency>
 ```
 
@@ -24,6 +24,7 @@ Declare a new bean in your Spring configuration :
 ```
 <bean id="cronitorClient" class="io.cronitor.client.CronitorClient">
      <constructor-arg index="0" value="apiKey"/>
+     <constructor-arg index="1" value="myEnv"/>
 </bean>
 ```
 
@@ -36,7 +37,7 @@ private CronitorClient cronitorClient;
 ### Usage without Spring
 Simply declare a new CronitorClient instance in the class containing the routine to monitor:
 ```
-CronitorClient cronitorClient = new CronitorClient('yourApiKey');
+CronitorClient cronitorClient = new CronitorClient('yourApiKey','myEnv');
 ```
 
 ### Examples
@@ -51,10 +52,15 @@ CronitorClient cronitorClient = new CronitorClient('yourApiKey');
     cronitorClient.complete("nightlyDataExport");
 ```
 
+### send a tick event (Send heartbeat events for a job/process)
+```java
+    cronitorClient.tick("important-heartbeat-monitor");
+```
+
 ### send a failure event (a job/process crashed)
 ```java
     cronitorClient.complete("nightlyDataExport");
-```
+``
 
 ### pause a monitor
 ```java
@@ -71,9 +77,24 @@ CronitorClient cronitorClient = new CronitorClient('yourApiKey');
     // each event method supports an optional message param
     cronitorClient.run("nightlyDataExport", "Started by user 123");
 
+    cronitorClient.run("important-heartbeat-monitor", "Alive!");
+
     cronitorClient.fail("nightlyDataExport", e.printStackTrace());
 ```
 
+### including metrics
+```java
+    Map<String, Integer> metrics = new HashMap<String, Integer>() {
+            {
+                put("count", 100);
+                put("error_count", 5);
+            }
+        };
+    // each event method supports an optional message param
+    cronitorClient.complete("nightlyDataExport", "ok", metrics);
+
+    cronitorClient.fail("nightlyDataExport", e.printStackTrace(), metrics);
+```
 
 ## Development
 
@@ -86,3 +107,5 @@ If you want to share an idea, report an issue, or just say hello you can open an
 - [@nnerny](https://github.com/nnerny)
 - [@firone](https://github.com/firone)
 - [@aflanagan](https://github.com/aflanagan)
+- [@vcanuel](https://github.com/vcanuel)
+

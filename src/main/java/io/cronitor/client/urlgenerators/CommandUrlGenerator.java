@@ -5,6 +5,7 @@ import org.apache.http.client.utils.URIBuilder;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Map;
 import java.util.logging.Logger;
 
 public class CommandUrlGenerator {
@@ -33,9 +34,8 @@ public class CommandUrlGenerator {
         this.useHttps = useHttps;
     }
 
-
-    public URL buildURL(String command, String monitorKey, String apiKey, String message) throws MalformedURLException {
-        String baseURL;
+    public URL buildURL(String command, String monitorKey, String apiKey, String env, String message,
+            Map<String, Integer> metrics) throws MalformedURLException {
         String url;
 
         if (usePrimaryPingDomain) {
@@ -51,15 +51,26 @@ public class CommandUrlGenerator {
         try {
             URIBuilder uriBuilder = new URIBuilder(url);
 
-            uriBuilder.addParameter("state", command);
+            if (command != null) {
+                uriBuilder.addParameter("state", command);
+            }
 
             if (message != null) {
-                uriBuilder.addParameter("msg", message);
+                uriBuilder.addParameter("message", message);
+            }
+
+            if (metrics != null) {
+                metrics.forEach((key, value) -> uriBuilder.addParameter("metric", key + ":" + value));
+            }
+
+            if (env != null) {
+                uriBuilder.addParameter("env", env);
             }
 
             return uriBuilder.build().toURL();
         } catch (URISyntaxException e) {
-            logger.warning(String.format("Failed to construct url for [%s, %s, %s, %s]", command, monitorKey, apiKey, message));
+            logger.warning(String.format("Failed to construct url for [%s, %s, %s, %s, %s]", command, monitorKey,
+                    apiKey, metrics, message));
             return new URL(CommandUrlGenerator.BASE_URL);
         }
 
@@ -78,7 +89,7 @@ public class CommandUrlGenerator {
 
             return uriBuilder.build().toURL();
         } catch (URISyntaxException e) {
-            logger.warning(String.format("Failed to construct url for [%s, %d, %s, %s]", monitorKey, pauseHours, apiKey));
+            logger.warning(String.format("Failed to construct url for [%s, %d, %s]", monitorKey, pauseHours, apiKey));
             return new URL(CommandUrlGenerator.PAUSE_BASE_URL);
         }
     }
