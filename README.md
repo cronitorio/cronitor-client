@@ -57,7 +57,7 @@ CronitorClient cronitorClient = new CronitorClient('yourApiKey', 'production');
 
 ### send a failure event (a job has failed)
 ```java
-    cronitorClient.complete("nightly-data-export");
+    cronitorClient.fail("nightly-data-export");
 ```
 
 ### send a tick event (heartbeat events)
