@@ -23,10 +23,10 @@ public class CronitorPinger {
     private final Integer cronitorPingTimeoutInSecond = 10;
 
     public void ping(String command, String monitorKey, String apiKey, String env, String message,
-            Map<String, Integer> metrics, Boolean useHttps) throws IOException {
+                     Map<String, Integer> metrics, String series, Boolean useHttps) throws IOException {
         for (int i = 0; i < 8; i++) {
             Boolean usePrimaryPingDomain = i < 4;
-            setConnection(getURL(usePrimaryPingDomain, useHttps, command, monitorKey, apiKey, env, message, metrics),
+            setConnection(getURL(usePrimaryPingDomain, useHttps, command, monitorKey, apiKey, env, message, metrics, series),
                     apiKey);
             if (_ping()) {
                 return;
@@ -46,9 +46,9 @@ public class CronitorPinger {
 
     // methods below are left open to package for ease of testing purposes.
     URL getURL(Boolean usePrimaryPingDomain, Boolean useHttps, String command, String monitorKey, String apiKey,
-            String env, String message, Map<String, Integer> metrics) throws IOException {
+            String env, String message, Map<String, Integer> metrics, String series) throws IOException {
         return new CommandUrlGenerator(usePrimaryPingDomain, useHttps).buildURL(command, monitorKey, apiKey, env,
-                message, metrics);
+                message, metrics, series);
     }
 
     URL getURL(Boolean usePrimaryPingDomain, Boolean useHttps, String monitorKey, int timeoutHours, String apiKey)

@@ -49,7 +49,7 @@ public class CronitorClient {
 
     public void run(String monitorKey) throws IOException {
         if (StringUtils.isNotBlank(monitorKey)) {
-            cronitorPinger.ping(Command.RUN.getValue(), monitorKey, apiKey, env, null, null, useHttps);
+            cronitorPinger.ping(Command.RUN.getValue(), monitorKey, apiKey, env, null, null, null, useHttps);
         } else {
             logger.warning("Unable to send event: monitor code is null or empty.");
         }
@@ -57,7 +57,7 @@ public class CronitorClient {
 
     public void run(String monitorKey, String message) throws IOException {
         if (StringUtils.isNotBlank(monitorKey)) {
-            cronitorPinger.ping(Command.RUN.getValue(), monitorKey, apiKey, env, message, null, useHttps);
+            cronitorPinger.ping(Command.RUN.getValue(), monitorKey, apiKey, env, message, null, null, useHttps);
         } else {
             logger.warning("Unable to send event: monitor code is null or empty.");
         }
@@ -65,7 +65,15 @@ public class CronitorClient {
 
     public void run(String monitorKey, String message, Map<String, Integer> metrics) throws IOException {
         if (StringUtils.isNotBlank(monitorKey)) {
-            cronitorPinger.ping(Command.RUN.getValue(), monitorKey, apiKey, env, message, metrics, useHttps);
+            cronitorPinger.ping(Command.RUN.getValue(), monitorKey, apiKey, env, message, metrics, null, useHttps);
+        } else {
+            logger.warning("Unable to send event: monitor code is null or empty.");
+        }
+    }
+
+    public void run(String monitorKey, String message, Map<String, Integer> metrics, String series) throws IOException {
+        if (StringUtils.isNotBlank(monitorKey)) {
+            cronitorPinger.ping(Command.RUN.getValue(), monitorKey, apiKey, env, message, metrics, series, useHttps);
         } else {
             logger.warning("Unable to send event: monitor code is null or empty.");
         }
@@ -74,7 +82,7 @@ public class CronitorClient {
     public void complete(String monitorKey) throws IOException {
 
         if (StringUtils.isNotBlank(monitorKey)) {
-            cronitorPinger.ping(Command.COMPLETE.getValue(), monitorKey, apiKey, env, null, null, useHttps);
+            cronitorPinger.ping(Command.COMPLETE.getValue(), monitorKey, apiKey, env, null, null, null, useHttps);
         } else {
             logger.warning("Unable to send event: monitor code is null or empty.");
         }
@@ -83,7 +91,7 @@ public class CronitorClient {
     public void complete(String monitorKey, String message) throws IOException {
 
         if (StringUtils.isNotBlank(monitorKey)) {
-            cronitorPinger.ping(Command.COMPLETE.getValue(), monitorKey, apiKey, env, message, null, useHttps);
+            cronitorPinger.ping(Command.COMPLETE.getValue(), monitorKey, apiKey, env, message, null, null, useHttps);
         } else {
             logger.warning("Unable to send event: monitor code is null or empty.");
         }
@@ -92,7 +100,16 @@ public class CronitorClient {
     public void complete(String monitorKey, String message, Map<String, Integer> metrics) throws IOException {
 
         if (StringUtils.isNotBlank(monitorKey)) {
-            cronitorPinger.ping(Command.COMPLETE.getValue(), monitorKey, apiKey, env, message, metrics, useHttps);
+            cronitorPinger.ping(Command.COMPLETE.getValue(), monitorKey, apiKey, env, message, metrics, null, useHttps);
+        } else {
+            logger.warning("Unable to send event: monitor code is null or empty.");
+        }
+    }
+
+    public void complete(String monitorKey, String message, Map<String, Integer> metrics, String series) throws IOException {
+
+        if (StringUtils.isNotBlank(monitorKey)) {
+            cronitorPinger.ping(Command.COMPLETE.getValue(), monitorKey, apiKey, env, message, metrics, series, useHttps);
         } else {
             logger.warning("Unable to send event: monitor code is null or empty.");
         }
@@ -101,7 +118,7 @@ public class CronitorClient {
     public void tick(String monitorKey) throws IOException {
 
         if (StringUtils.isNotBlank(monitorKey)) {
-            cronitorPinger.ping(null, monitorKey, apiKey, env, null, null, useHttps);
+            cronitorPinger.ping(null, monitorKey, apiKey, env, null, null, null, useHttps);
         } else {
             logger.warning("Unable to send event: monitor code is null or empty.");
         }
@@ -110,7 +127,7 @@ public class CronitorClient {
     public void tick(String monitorKey, String message) throws IOException {
 
         if (StringUtils.isNotBlank(monitorKey)) {
-            cronitorPinger.ping(null, monitorKey, apiKey, env, message, null, useHttps);
+            cronitorPinger.ping(null, monitorKey, apiKey, env, message, null, null, useHttps);
         } else {
             logger.warning("Unable to send event: monitor code is null or empty.");
         }
@@ -119,7 +136,16 @@ public class CronitorClient {
     public void tick(String monitorKey, String message, Map<String, Integer> metrics) throws IOException {
 
         if (StringUtils.isNotBlank(monitorKey)) {
-            cronitorPinger.ping(null, monitorKey, apiKey, env, message, metrics, useHttps);
+            cronitorPinger.ping(null, monitorKey, apiKey, env, message, metrics, null, useHttps);
+        } else {
+            logger.warning("Unable to send event: monitor code is null or empty.");
+        }
+    }
+
+    public void tick(String monitorKey, String message, Map<String, Integer> metrics, String series) throws IOException {
+
+        if (StringUtils.isNotBlank(monitorKey)) {
+            cronitorPinger.ping(null, monitorKey, apiKey, env, message, metrics, series, useHttps);
         } else {
             logger.warning("Unable to send event: monitor code is null or empty.");
         }
@@ -128,7 +154,7 @@ public class CronitorClient {
     public void reset(String monitorKey) throws IOException {
 
         if (StringUtils.isNotBlank(monitorKey)) {
-            cronitorPinger.ping(Command.OK.getValue(), monitorKey, apiKey, env, null, null, useHttps);
+            cronitorPinger.ping(Command.OK.getValue(), monitorKey, apiKey, env, null, null, null, useHttps);
         } else {
             logger.warning("Unable to send event: monitor code is null or empty.");
         }
@@ -137,7 +163,7 @@ public class CronitorClient {
     public void reset(String monitorKey, String message) throws IOException {
 
         if (StringUtils.isNotBlank(monitorKey)) {
-            cronitorPinger.ping(Command.OK.getValue(), monitorKey, apiKey, env, message, null, useHttps);
+            cronitorPinger.ping(Command.OK.getValue(), monitorKey, apiKey, env, message, null, null, useHttps);
         } else {
             logger.warning("Unable to send event: monitor code is null or empty.");
         }
@@ -146,7 +172,7 @@ public class CronitorClient {
     public void fail(String monitorKey) throws IOException {
 
         if (StringUtils.isNotBlank(monitorKey)) {
-            cronitorPinger.ping(Command.FAIL.getValue(), monitorKey, apiKey, env, null, null, useHttps);
+            cronitorPinger.ping(Command.FAIL.getValue(), monitorKey, apiKey, env, null, null, null, useHttps);
         } else {
             logger.warning("Unable to send event: monitor code is null or empty.");
         }
@@ -155,7 +181,7 @@ public class CronitorClient {
     public void fail(String monitorKey, String message) throws IOException {
 
         if (StringUtils.isNotBlank(monitorKey)) {
-            cronitorPinger.ping(Command.FAIL.getValue(), monitorKey, apiKey, env, message, null, useHttps);
+            cronitorPinger.ping(Command.FAIL.getValue(), monitorKey, apiKey, env, message, null, null, useHttps);
         } else {
             logger.warning("Unable to send event: monitor code is null or empty.");
         }
@@ -164,7 +190,16 @@ public class CronitorClient {
     public void fail(String monitorKey, String message, Map<String, Integer> metrics) throws IOException {
 
         if (StringUtils.isNotBlank(monitorKey)) {
-            cronitorPinger.ping(Command.FAIL.getValue(), monitorKey, apiKey, env, message, metrics, useHttps);
+            cronitorPinger.ping(Command.FAIL.getValue(), monitorKey, apiKey, env, message, metrics, null, useHttps);
+        } else {
+            logger.warning("Unable to send event: monitor code is null or empty.");
+        }
+    }
+
+    public void fail(String monitorKey, String message, Map<String, Integer> metrics, String series) throws IOException {
+
+        if (StringUtils.isNotBlank(monitorKey)) {
+            cronitorPinger.ping(Command.FAIL.getValue(), monitorKey, apiKey, env, message, metrics, series, useHttps);
         } else {
             logger.warning("Unable to send event: monitor code is null or empty.");
         }

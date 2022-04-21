@@ -30,21 +30,21 @@ public class MonitorWithoutIdentificationTest {
     public void can_start_monitor_with_minimal_requirements() throws Exception {
 
         client.run(monitorKey);
-        verify(cronitorPinger).ping(Command.RUN.getValue(), "d3x0c1", null, null, null, null, true);
+        verify(cronitorPinger).ping(Command.RUN.getValue(), "d3x0c1", null, null, null, null, null, true);
     }
 
     @Test
     public void can_start_monitor_with_message() throws Exception {
 
         client.run(monitorKey, "customRunMessage");
-        verify(cronitorPinger).ping(Command.RUN.getValue(), "d3x0c1", null, null, "customRunMessage", null, true);
+        verify(cronitorPinger).ping(Command.RUN.getValue(), "d3x0c1", null, null, "customRunMessage", null, null, true);
     }
 
     @Test
     public void can_complete_monitor_with_minimal_requirements() throws Exception {
 
         client.complete(monitorKey);
-        verify(cronitorPinger).ping(Command.COMPLETE.getValue(), "d3x0c1", null, null, null, null, true);
+        verify(cronitorPinger).ping(Command.COMPLETE.getValue(), "d3x0c1", null, null, null, null, null, true);
     }
 
     @Test
@@ -52,7 +52,7 @@ public class MonitorWithoutIdentificationTest {
 
         client.complete(monitorKey, "customCompleteMessage");
         verify(cronitorPinger).ping(Command.COMPLETE.getValue(), "d3x0c1", null, null, "customCompleteMessage", null,
-                true);
+                null, true);
     }
 
     @Test
@@ -64,49 +64,56 @@ public class MonitorWithoutIdentificationTest {
             }
         };
         client.complete(monitorKey, null, metrics);
-        verify(cronitorPinger).ping(Command.COMPLETE.getValue(), "d3x0c1", null, null, null, metrics, true);
+        verify(cronitorPinger).ping(Command.COMPLETE.getValue(), "d3x0c1", null, null, null, metrics, null, true);
+    }
+
+    @Test
+    public void can_complete_monitor_with_series() throws Exception {
+        String series = "foo1234";
+        client.complete(monitorKey, null, null, series);
+        verify(cronitorPinger).ping(Command.COMPLETE.getValue(), "d3x0c1", null, null, null, null, series, true);
     }
 
     @Test
     public void can_tick_monitor_with_minimal_requirements() throws Exception {
 
         client.tick(monitorKey);
-        verify(cronitorPinger).ping(null, "d3x0c1", null, null, null, null, true);
+        verify(cronitorPinger).ping(null, "d3x0c1", null, null, null, null, null, true);
     }
 
     @Test
     public void can_tick_monitor_with_message() throws Exception {
 
         client.tick(monitorKey, "customCompleteMessage");
-        verify(cronitorPinger).ping(null, "d3x0c1", null, null, "customCompleteMessage", null, true);
+        verify(cronitorPinger).ping(null, "d3x0c1", null, null, "customCompleteMessage", null, null, true);
     }
 
     @Test
     public void can_reset_monitor_with_minimal_requirements() throws Exception {
 
         client.reset(monitorKey);
-        verify(cronitorPinger).ping(Command.OK.getValue(), "d3x0c1", null, null, null, null, true);
+        verify(cronitorPinger).ping(Command.OK.getValue(), "d3x0c1", null, null, null, null, null, true);
     }
 
     @Test
     public void can_reset_monitor_with_message() throws Exception {
 
         client.reset(monitorKey, "customCompleteMessage");
-        verify(cronitorPinger).ping(Command.OK.getValue(), "d3x0c1", null, null, "customCompleteMessage", null, true);
+        verify(cronitorPinger).ping(Command.OK.getValue(), "d3x0c1", null, null, "customCompleteMessage", null, null, true);
     }
 
     @Test
     public void can_fail_monitor_with_minimal_requirements() throws Exception {
 
         client.fail(monitorKey);
-        verify(cronitorPinger).ping(Command.FAIL.getValue(), "d3x0c1", null, null, null, null, true);
+        verify(cronitorPinger).ping(Command.FAIL.getValue(), "d3x0c1", null, null, null, null, null, true);
     }
 
     @Test
     public void can_fail_monitor_with_message() throws Exception {
 
         client.fail(monitorKey, "customFailMessage");
-        verify(cronitorPinger).ping(Command.FAIL.getValue(), "d3x0c1", null, null, "customFailMessage", null, true);
+        verify(cronitorPinger).ping(Command.FAIL.getValue(), "d3x0c1", null, null, "customFailMessage", null, null, true);
     }
 
     @Test
@@ -119,7 +126,15 @@ public class MonitorWithoutIdentificationTest {
             }
         };
         client.fail(monitorKey, null, metrics);
-        verify(cronitorPinger).ping(Command.FAIL.getValue(), "d3x0c1", null, null, null, metrics, true);
+        verify(cronitorPinger).ping(Command.FAIL.getValue(), "d3x0c1", null, null, null, metrics, null, true);
+    }
+
+    @Test
+    public void can_fail_monitor_with_series() throws Exception {
+
+        String series = "foo1234";
+        client.fail(monitorKey, null, null, series);
+        verify(cronitorPinger).ping(Command.FAIL.getValue(), "d3x0c1", null, null, null, null, series, true);
     }
 
     @Test
@@ -132,7 +147,15 @@ public class MonitorWithoutIdentificationTest {
             }
         };
         client.tick(monitorKey, null, metrics);
-        verify(cronitorPinger).ping(null, "d3x0c1", null, null, null, metrics, true);
+        verify(cronitorPinger).ping(null, "d3x0c1", null, null, null, metrics, null, true);
+    }
+
+    @Test
+    public void can_tick_monitor_with_series() throws Exception {
+
+        String series = "foo1234";
+        client.tick(monitorKey, null, null, series);
+        verify(cronitorPinger).ping(null, "d3x0c1", null, null, null, null, series, true);
     }
 
     @Test
