@@ -35,7 +35,7 @@ public class CommandUrlGenerator {
     }
 
     public URL buildURL(String command, String monitorKey, String apiKey, String env, String message,
-            Map<String, Integer> metrics) throws MalformedURLException {
+            Map<String, Integer> metrics, String series) throws MalformedURLException {
         String url;
 
         if (usePrimaryPingDomain) {
@@ -61,6 +61,10 @@ public class CommandUrlGenerator {
 
             if (metrics != null) {
                 metrics.forEach((key, value) -> uriBuilder.addParameter("metric", key + ":" + value));
+            }
+
+            if (series != null) {
+                uriBuilder.addParameter("series", series);
             }
 
             if (env != null) {

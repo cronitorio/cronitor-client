@@ -29,21 +29,21 @@ public class MonitorWithoutHttpsTest {
     public void can_start_monitor_with_minimal_requirements() throws Exception {
 
         client.run(monitorKey);
-        verify(cronitorPinger).ping(Command.RUN.getValue(), "d3x0c1", null, null, null, null, false);
+        verify(cronitorPinger).ping(Command.RUN.getValue(), "d3x0c1", null, null, null, null, null, false);
     }
 
     @Test
     public void can_start_monitor_with_message() throws Exception {
 
         client.run(monitorKey, "customRunMessage");
-        verify(cronitorPinger).ping(Command.RUN.getValue(), "d3x0c1", null, null, "customRunMessage", null, false);
+        verify(cronitorPinger).ping(Command.RUN.getValue(), "d3x0c1", null, null, "customRunMessage", null, null, false);
     }
 
     @Test
     public void can_complete_monitor_with_minimal_requirements() throws Exception {
 
         client.complete(monitorKey);
-        verify(cronitorPinger).ping(Command.COMPLETE.getValue(), "d3x0c1", null, null, null, null, false);
+        verify(cronitorPinger).ping(Command.COMPLETE.getValue(), "d3x0c1", null, null, null, null, null, false);
     }
 
     @Test
@@ -51,48 +51,48 @@ public class MonitorWithoutHttpsTest {
 
         client.complete(monitorKey, "customCompleteMessage");
         verify(cronitorPinger).ping(Command.COMPLETE.getValue(), "d3x0c1", null, null, "customCompleteMessage", null,
-                false);
+                null, false);
     }
 
     @Test
     public void can_tick_monitor_with_minimal_requirements() throws Exception {
 
         client.tick(monitorKey);
-        verify(cronitorPinger).ping(null, "d3x0c1", null, null, null, null, false);
+        verify(cronitorPinger).ping(null, "d3x0c1", null, null, null, null, null, false);
     }
 
     @Test
     public void can_tick_monitor_monitor_with_message() throws Exception {
 
         client.tick(monitorKey, "customCompleteMessage");
-        verify(cronitorPinger).ping(null, "d3x0c1", null, null, "customCompleteMessage", null, false);
+        verify(cronitorPinger).ping(null, "d3x0c1", null, null, "customCompleteMessage", null, null, false);
     }
 
     @Test
     public void can_reset_monitor_with_minimal_requirements() throws Exception {
 
         client.reset(monitorKey);
-        verify(cronitorPinger).ping(Command.OK.getValue(), "d3x0c1", null, null, null, null, false);
+        verify(cronitorPinger).ping(Command.OK.getValue(), "d3x0c1", null, null, null, null, null, false);
     }
 
     @Test
     public void can_reset_monitor_with_message() throws Exception {
 
         client.reset(monitorKey, "customCompleteMessage");
-        verify(cronitorPinger).ping(Command.OK.getValue(), "d3x0c1", null, null, "customCompleteMessage", null, false);
+        verify(cronitorPinger).ping(Command.OK.getValue(), "d3x0c1", null, null, "customCompleteMessage", null, null, false);
     }
 
     @Test
     public void can_fail_monitor_with_minimal_requirements() throws Exception {
 
         client.fail(monitorKey);
-        verify(cronitorPinger).ping(Command.FAIL.getValue(), "d3x0c1", null, null, null, null, false);
+        verify(cronitorPinger).ping(Command.FAIL.getValue(), "d3x0c1", null, null, null, null, null, false);
     }
 
     @Test
     public void can_fail_monitor_with_message() throws Exception {
         client.fail(monitorKey, "customFailMessage");
-        verify(cronitorPinger).ping(Command.FAIL.getValue(), "d3x0c1", null, null, "customFailMessage", null, false);
+        verify(cronitorPinger).ping(Command.FAIL.getValue(), "d3x0c1", null, null, "customFailMessage", null, null, false);
     }
 
     @Test
@@ -104,7 +104,7 @@ public class MonitorWithoutHttpsTest {
             }
         };
         client.fail(monitorKey, null, metrics);
-        verify(cronitorPinger).ping(Command.FAIL.getValue(), "d3x0c1", null, null, null, metrics, false);
+        verify(cronitorPinger).ping(Command.FAIL.getValue(), "d3x0c1", null, null, null, metrics, null, false);
     }
 
     @Test
@@ -116,7 +116,7 @@ public class MonitorWithoutHttpsTest {
             }
         };
         client.tick(monitorKey, null, metrics);
-        verify(cronitorPinger).ping(null, "d3x0c1", null, null, null, metrics, false);
+        verify(cronitorPinger).ping(null, "d3x0c1", null, null, null, metrics, null, false);
     }
 
     @Test

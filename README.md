@@ -14,7 +14,7 @@ If you are using Maven, simply add this line in your pom.xml file :
 <dependency>
     <groupId>io.cronitor</groupId>
     <artifactId>client</artifactId>
-    <version>1.5.0</version>
+    <version>1.6.0</version>
 </dependency>
 ```
 
