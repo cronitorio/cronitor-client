@@ -6,7 +6,7 @@ This java library provides a simple abstraction for the pinging of a Cronitor mo
 
 ## Install
 You can download the cronitor client JAR from the Maven central repository.
-[https://repo.maven.apache.org/maven2/io/cronitor/client/1.4.0/](https://repo.maven.apache.org/maven2/io/cronitor/client/1.4.0/)
+[https://repo.maven.apache.org/maven2/io/cronitor/client/1.6.0/](https://repo.maven.apache.org/maven2/io/cronitor/client/1.6.0/)
 
 ### Install with Maven
 If you are using Maven, simply add this line in your pom.xml file :
